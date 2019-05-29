@@ -12,7 +12,7 @@ function download(output) {
   output.split('\n').forEach((row) => {
     const rowToPush = new Array(0);
     row.split('\t').forEach((data) => {
-      if (data !== '' && data !== undefined) rowToPush.push(data.replace('#','').trim());
+      if (data !== '' && data !== undefined) rowToPush.push(data.replace('#', '').trim());
     });
     csvOutput.push(rowToPush);
   });
