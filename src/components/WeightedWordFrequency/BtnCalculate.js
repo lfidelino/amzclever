@@ -1,60 +1,61 @@
 /* eslint-disable prefer-destructuring */
 import React, { Component } from 'react';
+import XLSX from 'xlsx';
+import saveAs from 'file-saver';
 
 const initialState = {};
 
+// eslint-disable-next-line
 function pad(n) {
   return n < 10 ? `0${n}` : n;
 }
 
-function download(output) {
-  const csvOutput = [];
-  output.split('\n').forEach((row) => {
-    const rowToPush = new Array(0);
-    row.split('\t').forEach((data) => {
-      if (data !== '' && data !== undefined) rowToPush.push(data.replace('#', '').trim());
-    });
-    csvOutput.push(rowToPush);
+function s2ab(s) {
+  const buf = new ArrayBuffer(s.length);
+  const view = new Uint8Array(buf);
+  // eslint-disable-next-line no-bitwise
+  for (let i = 0; i < s.length; i += 1) view[i] = s.charCodeAt(i) & 0xFF;
+  return buf;
+}
+
+function download(rawOutput) {
+  const wb = XLSX.utils.book_new();
+  wb.SheetNames.push('Weighted Word Frequency');
+
+  const wsData = [];
+  rawOutput.split('\n').forEach((line) => {
+    wsData.push(line.split('\t'));
   });
+  console.log(wsData);
 
-  const csvContent = `data:text/csv;charset=utf-8,${csvOutput.map(e => e.join()).join('\n')}`;
-  csvContent.replace('Search', '');
-  console.log(csvContent);
-
-  const encodedUri = encodeURI(csvContent);
+  const ws = XLSX.utils.aoa_to_sheet(wsData);
+  wb.Sheets['Weighted Word Frequency'] = ws;
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
 
   const currentDate = new Date();
   const date = currentDate.getDate();
-  const month = currentDate.getMonth(); // Be careful! January is 0 not 1
+  const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
   const hour = currentDate.getHours();
   const min = currentDate.getMinutes();
   const sec = currentDate.getSeconds();
   const mmddyyyy = pad(month + 1) + pad(date) + year.toString().substr(2, 3);
   const hhmmss = `${pad(hour)}h${pad(min)}m${pad(sec)}s`;
-  const link = document.createElement('a');
 
-  link.setAttribute('href', encodedUri);
-  link.setAttribute(
-    'download',
-    `Weighted Word Frequency ${mmddyyyy} ${hhmmss}.csv`,
-  );
-  document.body.appendChild(link); // Required for FF
-
-  link.click();
+  saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), `Weighted Word Frequency ${mmddyyyy} ${hhmmss}.xlsx`);
 }
 
 function onCalculateClick() {
   const rawData = document.getElementById('tadata').value;
   const dataSplitLine = rawData.split('\n');
   const header = dataSplitLine[0].split('\t');
-  const rawDataArray = new Array(0);
-  const word = new Array(0);
+  const rawDataArray = [];
+  const words = [];
   let output = '';
 
   //* fill raw data array headers
   for (let i = 0; i < header.length; i += 1) {
-    rawDataArray[i] = new Array(0);
+    rawDataArray[i] = [];
     rawDataArray[i][0] = header[i];
   }
 
@@ -80,15 +81,15 @@ function onCalculateClick() {
   }
 
   //* split rawDataArray[0][..] into separate words
-  rawDataArray[0].forEach((element, index) => {
+  rawDataArray[0].forEach((line, index) => {
     if (index !== 0) {
-      element.split(' ').forEach((element2) => {
-        if (!word.includes(element2)) word.push(element2);
+      line.split(' ').forEach((word) => {
+        if (!words.includes(word)) words.push(word);
       });
     }
   });
-  word.splice(word.indexOf(''), 1);
-  word.sort();
+
+  words.sort();
 
   //* headers
   header.forEach((element) => {
@@ -102,7 +103,7 @@ function onCalculateClick() {
   output += '\n';
 
   //* calculations
-  word.forEach((element) => {
+  words.forEach((element) => {
     output += `${element}\t`;
     for (let i = 1; i < rawDataArray.length; i += 1) {
       let sum = 0;
