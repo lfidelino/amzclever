@@ -77,7 +77,7 @@ function onCalculateClick() {
     rawDataArray[i] = [];
     rawDataArray[i][0] = header[i];
   }
-  console.log(header);
+
   //* fill raw data array search terms
   for (let i = 1; i < dataSplitLine.length; i += 1) {
     if (
@@ -126,6 +126,10 @@ function onCalculateClick() {
         if (
           rawDataArray[0][j] !== undefined
           && rawDataArray[0][j].includes(element)
+          && (rawDataArray[0][j].match(new RegExp(`^${element}$`, 'g'))
+          || rawDataArray[0][j].match(new RegExp(`.+\\s${element}\\s.+`, 'g'))
+          || rawDataArray[0][j].match(new RegExp(`^${element}\\s.+`, 'g'))
+          || rawDataArray[0][j].match(new RegExp(`.+\\s${element}$`, 'g')))
         ) { sum += rawDataArray[i][j]; }
       }
       output += `${sum}\t`;
