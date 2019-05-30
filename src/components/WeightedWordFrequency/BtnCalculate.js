@@ -26,9 +26,15 @@ function download(rawOutput) {
   rawOutput.split('\n').forEach((line) => {
     wsData.push(line.split('\t'));
   });
-  console.log(wsData);
-
   const ws = XLSX.utils.aoa_to_sheet(wsData);
+  for (let C = 1; C < XLSX.utils.decode_range(ws['!ref']).e.c; C += 1) {
+    for (let R = 1; R < XLSX.utils.decode_range(ws['!ref']).e.r; R += 1) {
+      const ref = XLSX.utils.encode_cell({ r: R, c: C });
+      ws[ref].t = 'n';
+    }
+  }
+  console.log('ws', ws);
+
   wb.Sheets['Weighted Word Frequency'] = ws;
   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
 
@@ -58,7 +64,7 @@ function onCalculateClick() {
     rawDataArray[i] = [];
     rawDataArray[i][0] = header[i];
   }
-
+  console.log(header);
   //* fill raw data array search terms
   for (let i = 1; i < dataSplitLine.length; i += 1) {
     if (
@@ -84,7 +90,7 @@ function onCalculateClick() {
   rawDataArray[0].forEach((line, index) => {
     if (index !== 0) {
       line.split(' ').forEach((word) => {
-        if (!words.includes(word)) words.push(word);
+        if (!words.includes(word) && word !== '') words.push(word);
       });
     }
   });
