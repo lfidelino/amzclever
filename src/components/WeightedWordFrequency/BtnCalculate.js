@@ -19,25 +19,38 @@ function s2ab(s) {
 }
 
 function download(rawOutput) {
+  //* create workbook
   const wb = XLSX.utils.book_new();
   wb.SheetNames.push('Weighted Word Frequency');
 
+  //* prepare data
   const wsData = [];
   rawOutput.split('\n').forEach((line) => {
     wsData.push(line.split('\t'));
   });
+
+  //* add data to worksheet
   const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+  //* format data to number
   for (let C = 1; C < XLSX.utils.decode_range(ws['!ref']).e.c; C += 1) {
     for (let R = 1; R < XLSX.utils.decode_range(ws['!ref']).e.r; R += 1) {
       const ref = XLSX.utils.encode_cell({ r: R, c: C });
       ws[ref].t = 'n';
     }
   }
-  console.log('ws', ws);
 
+  //* add autofilter
+  const autoFilterRef = XLSX.utils.decode_range(ws['!ref']);
+  autoFilterRef.e.c -= 1;
+  autoFilterRef.e.r -= 1;
+  ws['!autofilter'] = { ref: autoFilterRef };
+
+  //* add worksheet to workbook
   wb.Sheets['Weighted Word Frequency'] = ws;
   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
 
+  //* download
   const currentDate = new Date();
   const date = currentDate.getDate();
   const month = currentDate.getMonth();
