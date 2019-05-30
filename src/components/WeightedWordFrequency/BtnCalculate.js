@@ -112,11 +112,7 @@ function onCalculateClick() {
 
   //* headers
   header.forEach((element) => {
-    const data = element
-      .replace('(', '')
-      .replace('#', '')
-      .replace(')', '')
-      .trim();
+    const data = element.trim();
     output += `${data}\t`;
   });
   output += '\n';
