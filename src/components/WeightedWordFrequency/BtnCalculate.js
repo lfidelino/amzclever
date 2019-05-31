@@ -46,6 +46,10 @@ function download(rawOutput) {
   autoFilterRef.e.r -= 1;
   ws['!autofilter'] = { ref: autoFilterRef };
 
+
+  // TODO Wrap text headers
+  // TODO auto resize column widths.
+
   //* add worksheet to workbook
   wb.Sheets['Weighted Word Frequency'] = ws;
   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
@@ -118,23 +122,23 @@ function onCalculateClick() {
   output += '\n';
 
   //* calculations
-  words.forEach((element) => {
-    output += `${element}\t`;
+  words.forEach((word) => { //* for each word in words list
+    output += `${word}\t`; //* add word\t to output
     for (let i = 1; i < rawDataArray.length; i += 1) {
       let sum = 0;
       for (let j = 1; j < rawDataArray[i].length; j += 1) {
         if (
-          rawDataArray[0][j] !== undefined
-          && rawDataArray[0][j].includes(element)
-          && (rawDataArray[0][j].match(new RegExp(`^${element}$`, 'g'))
-          || rawDataArray[0][j].match(new RegExp(`.+\\s${element}\\s.+`, 'g'))
-          || rawDataArray[0][j].match(new RegExp(`^${element}\\s.+`, 'g'))
-          || rawDataArray[0][j].match(new RegExp(`.+\\s${element}$`, 'g')))
-        ) { sum += rawDataArray[i][j]; }
+          rawDataArray[0][j] !== undefined //* line must not be undefined
+          && rawDataArray[0][j].includes(word) //* line must include word
+          && (rawDataArray[0][j].match(new RegExp(`^${word}$`, 'g')) //* only word in line
+          || rawDataArray[0][j].match(new RegExp(`.+\\s${word}\\s.+`, 'g')) //* between two words
+          || rawDataArray[0][j].match(new RegExp(`^${word}\\s.+`, 'g')) //* first word in line
+          || rawDataArray[0][j].match(new RegExp(`.+\\s${word}$`, 'g'))) //* last word in line
+        ) { sum += rawDataArray[i][j]; } //* add value to sum if true
       }
-      output += `${sum}\t`;
+      output += `${sum}\t`; //* add sum to output
     }
-    output += '\n';
+    output += '\n'; //* add \n to output
   });
 
   //* download output
