@@ -25,14 +25,14 @@ function generateFileName() {
   return `Weighted Word Frequency ${mmddyyyy} ${hhmmss}.xlsx`;
 }
 
-function download(rawOutput) {
+function download(sortedOutput) {
   //* create workbook and worksheet
   const wb = new Excel.Workbook();
   const ws = wb.addWorksheet('Weighted Word Frequency');
 
 
   //* add data to worksheet
-  rawOutput.split('\n').forEach((line) => {
+  sortedOutput.forEach((line) => {
     const row = line.split('\t');
     //* delete last index of every row- ""
     row.pop();
@@ -108,7 +108,8 @@ function onCalculateClick() {
   const header = dataSplitLine[0].split('\t');
   const rawDataArray = [];
   const words = [];
-  let output = '';
+  let rawOutput = '';
+  let sortedOutput = '';
 
   //* fill raw data array headers
   for (let i = 0; i < header.length; i += 1) {
@@ -146,18 +147,19 @@ function onCalculateClick() {
     }
   });
 
+  //* sort search terms
   words.sort();
 
   //* headers
   header.forEach((element) => {
     const data = element.trim();
-    output += `${data}\t`;
+    rawOutput += `${data}\t`;
   });
-  output += '\n';
+  rawOutput += '\n';
 
   //* calculations
   words.forEach((word) => { //* for each word in words list
-    output += `${word}\t`; //* add word\t to output
+    rawOutput += `${word}\t`; //* add word\t to output
     for (let i = 1; i < rawDataArray.length; i += 1) {
       let sum = 0;
       for (let j = 1; j < rawDataArray[i].length; j += 1) {
@@ -170,13 +172,25 @@ function onCalculateClick() {
           || rawDataArray[0][j].match(new RegExp(`.+\\s${word}$`, 'g'))) //* last word in line
         ) { sum += rawDataArray[i][j]; } //* add value to sum if true
       }
-      output += `${sum}\t`; //* add sum to output
+      rawOutput += `${sum}\t`; //* add sum to output
     }
-    output += '\n'; //* add \n to output
+    rawOutput += '\n'; //* add \n to output
   });
 
+  //* sort by sum of impressions
+  sortedOutput = rawOutput.split('\n');
+  for (let i = 1; i < sortedOutput.length; i += 1) {
+    for (let j = i + 1; j < sortedOutput.length; j += 1) {
+      if (parseFloat(sortedOutput[j].split('\t')[1]) > parseFloat(sortedOutput[i].split('\t')[1])) {
+        const temp = sortedOutput[i];
+        sortedOutput[i] = sortedOutput[j];
+        sortedOutput[j] = temp;
+      }
+    }
+  }
+
   //* download output
-  download(output);
+  download(sortedOutput);
 }
 
 class BtnCalculate extends Component {
