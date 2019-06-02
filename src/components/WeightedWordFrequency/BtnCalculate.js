@@ -177,11 +177,11 @@ function onCalculateClick() {
     rawOutput += '\n'; //* add \n to output
   });
 
-  //* sort by sum of impressions
+  //* sort by sum of clicks
   sortedOutput = rawOutput.split('\n');
   for (let i = 1; i < sortedOutput.length; i += 1) {
     for (let j = i + 1; j < sortedOutput.length; j += 1) {
-      if (parseFloat(sortedOutput[j].split('\t')[1]) > parseFloat(sortedOutput[i].split('\t')[1])) {
+      if (parseFloat(sortedOutput[j].split('\t')[2]) > parseFloat(sortedOutput[i].split('\t')[2])) {
         const temp = sortedOutput[i];
         sortedOutput[i] = sortedOutput[j];
         sortedOutput[j] = temp;
