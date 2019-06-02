@@ -25,7 +25,7 @@ function generateFileName() {
   return `Weighted Word Frequency ${mmddyyyy} ${hhmmss}.xlsx`;
 }
 
-function download(sortedOutput) {
+function generateAndDownloadWorkbook(sortedOutput) {
   //* create workbook and worksheet
   const wb = new Excel.Workbook();
   const ws = wb.addWorksheet('Weighted Word Frequency');
@@ -190,7 +190,7 @@ function onCalculateClick() {
   }
 
   //* download output
-  download(sortedOutput);
+  generateAndDownloadWorkbook(sortedOutput);
 }
 
 class BtnCalculate extends Component {
@@ -202,7 +202,7 @@ class BtnCalculate extends Component {
   render() {
     return (
       <React.Fragment>
-        <button type="submit" id="calculate" onClick={onCalculateClick}>
+        <button type="submit" id="btnCalculate" onClick={onCalculateClick}>
           Calculate
         </button>
       </React.Fragment>

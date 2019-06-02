@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TAData from './TAData';
 import BtnCalculate from './BtnCalculate';
+import './WeightedWordFrequency.css';
 
 const initialState = {};
 
@@ -13,9 +14,12 @@ class WeightedWordFrequency extends Component {
   render() {
     return (
       <React.Fragment>
-        <h2>Weighted Word Frequency</h2>
-        <TAData />
-        <BtnCalculate />
+        <div id="divWwf">
+          <h2>Weighted Word Frequency</h2>
+          <TAData />
+          <br />
+          <BtnCalculate />
+        </div>
       </React.Fragment>
     );
   }

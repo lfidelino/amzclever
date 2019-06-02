@@ -1,0 +1,25 @@
+#divWwf {
+  width: 95%;
+  margin: 0 auto;
+}
+
+h2 {
+  margin: 10px 0;
+  text-align: center;
+}
+
+#taData {
+  resize: none;
+  height: 75vh;
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#btnCalculate {
+  font-size: 2rem;
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+}

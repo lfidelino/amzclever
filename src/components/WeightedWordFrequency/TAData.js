@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './TAData.css';
 
 const initialState = {};
 
@@ -12,7 +11,7 @@ class TAData extends Component {
   render() {
     return (
       <React.Fragment>
-        <textarea id="tadata" />
+        <textarea id="taData" />
       </React.Fragment>
     );
   }
