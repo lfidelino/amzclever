@@ -103,7 +103,7 @@ function generateAndDownloadWorkbook(sortedOutput) {
 }
 
 function onCalculateClick() {
-  const rawData = document.getElementById('tadata').value;
+  const rawData = document.getElementById('taData').value;
   const dataSplitLine = rawData.split('\n');
   const header = dataSplitLine[0].split('\t');
   const rawDataArray = [];
