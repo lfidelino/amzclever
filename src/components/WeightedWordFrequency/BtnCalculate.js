@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable prefer-destructuring */
@@ -32,24 +33,43 @@ function generateAndDownloadWorkbook(sortedOutput) {
 
 
   //* add data to worksheet
-  sortedOutput.forEach((line) => {
+  sortedOutput.forEach((line, index) => {
     const row = line.split('\t');
-    //* delete last index of every row- ""
+    //* delete last cell of every row
     row.pop();
+    if (index === 0) {
+      //* add column headers
+      row.push('CTR');
+      row.push('7 Day ACoS');
+      row.push('CPC');
+      row.push('7 Day CVR');
+    } else if (index + 1 !== sortedOutput.length) {
+      //* add formulas to last four columns
+      row.push({ formula: `=IFERROR(C${index + 1}/B${index + 1},"NA")` });
+      row.push({ formula: `=IFERROR(D${index + 1}/E${index + 1},9)` });
+      row.push({ formula: `=IFERROR(D${index + 1}/C${index + 1},"NA")` });
+      row.push({ formula: `=IFERROR(F${index + 1}/C${index + 1},0)` });
+    }
     ws.addRow(row);
   });
 
   //* format data
   ws._rows.forEach((row, i) => {
     row._cells.forEach((cell, j) => {
-      // eslint-disable-next-line no-restricted-globals
-      if (!isNaN(cell.value)) {
-        //* parse to float if cell value is a number
+      if (i === 0 || j === 0) { //* if first crow or first column
+        cell.numFmt = '@';
+      } else if (j === row._cells.length - 2) { //* if cell is second to the last column (CPC)
+        cell.numFmt = '0.00;(-[Red]0.00)';
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4bACC6' } };
+      } else if (j >= row._cells.length - 4) { //* if cell is one of last for columns
+        cell.numFmt = '%0.00;(-[Red]%0.00)';
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4bACC6' } };
+      } else { //* if cell value has decimal
         cell.value = parseFloat(cell.value.toString());
-        //* format if cell value has decimal
-        if (cell.value % 1 !== 0) { cell.numFmt = '0.00;(-[Red]0.00)'; }
+        if (cell.value % 1 !== 0) {
+          cell.numFmt = '0.00;(-[Red]0.00)';
+        }
       }
-      if (i !== 0 && j === 0) { cell.numFmt = '@'; }
     });
   });
 
@@ -64,11 +84,11 @@ function generateAndDownloadWorkbook(sortedOutput) {
 
   //* headers format
   const row = ws.getRow(1);
-  row.eachCell((cell) => {
+  row.eachCell((cell, index) => {
     //* auto filter
     cell.alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };
     cell.font = {
-      size: 14,
+      size: 10,
       bold: true,
     };
     //* bottom border
@@ -76,11 +96,19 @@ function generateAndDownloadWorkbook(sortedOutput) {
       bottom: { style: 'thin' },
     };
     //* background
-    cell.fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFB7DEE8' },
-    };
+    if (index > ws.getRow(1)._cells.length - 4) {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF4bACC6' },
+      };
+    } else {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFBFBFBF' },
+      };
+    }
   });
 
   //* freeze top row
@@ -92,7 +120,7 @@ function generateAndDownloadWorkbook(sortedOutput) {
 
   //* resize column widths
   ws.columns.forEach((column, index) => {
-    if (index === 0) { column.width = 30; } else column.width = 20;
+    if (index === 0) { column.width = 20; } else column.width = 15;
   });
 
   //* download
