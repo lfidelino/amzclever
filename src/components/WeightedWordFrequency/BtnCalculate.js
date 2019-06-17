@@ -169,6 +169,9 @@ function onCalculateClick() {
   //* split rawDataArray[0][..] into separate words
   rawDataArray[0].forEach((line, index) => {
     if (index !== 0) {
+      line = line.replace('+', ' ');
+      line = line.replace('^', ' ');
+      line = line.replace('$', ' ');
       line.split(' ').forEach((word) => {
         if (!words.includes(word) && word !== '') words.push(word);
       });
