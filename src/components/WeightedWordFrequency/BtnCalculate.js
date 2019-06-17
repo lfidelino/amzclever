@@ -134,7 +134,7 @@ function generateAndDownloadWorkbook(sortedOutput) {
 
 function onCalculateClick() {
   let rawData = document.getElementById('taData').value;
-  const repForbiddenWith = document.getElementById('tbRf').value === '' ? ' ' : document.getElementById('tbRf').value;
+  const repForbiddenWith = document.getElementById('tbRf').value;
   rawData = rawData.split('$').join(`${repForbiddenWith}`);
   rawData = rawData.split('^').join(`${repForbiddenWith}`);
   rawData = rawData.split('*').join(`${repForbiddenWith}`);
