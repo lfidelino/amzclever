@@ -11,7 +11,7 @@ class TBReplaceForbidden extends Component {
   render() {
     return (
       <React.Fragment>
-        Replace forbidden characters ($, ^, *, +, ., ?, /, \) with:
+        Replace forbidden characters ($ ^ * + . ? / \) with:
         {' '}
         <input type="text" name="tbRf" id="tbRf" size="2" placeholder="space" />
       </React.Fragment>
