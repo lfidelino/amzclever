@@ -62,7 +62,7 @@ function generateAndDownloadWorkbook(sortedOutput) {
         cell.numFmt = '0.00;(-[Red]0.00)';
         cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4bACC6' } };
       } else if (j >= row._cells.length - 4) { //* if cell is one of last for columns
-        cell.numFmt = '%0.00;(-[Red]%0.00)';
+        cell.numFmt = '0.00%;(-[Red]0.00%)';
         cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4bACC6' } };
       } else { //* if cell value has decimal
         cell.value = parseFloat(cell.value.toString());
@@ -128,16 +128,29 @@ function generateAndDownloadWorkbook(sortedOutput) {
     const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     saveAs(blob, generateFileName());
   });
+
+  console.log('Done!');
 }
 
 function onCalculateClick() {
-  const rawData = document.getElementById('taData').value;
+  let rawData = document.getElementById('taData').value;
+  const repForbiddenWith = document.getElementById('tbRf').value === '' ? ' ' : document.getElementById('tbRf').value;
+  rawData = rawData.split('$').join(`${repForbiddenWith}`);
+  rawData = rawData.split('^').join(`${repForbiddenWith}`);
+  rawData = rawData.split('*').join(`${repForbiddenWith}`);
+  rawData = rawData.split('+').join(`${repForbiddenWith}`);
+  rawData = rawData.split('.').join(`${repForbiddenWith}`);
+  rawData = rawData.split('?').join(`${repForbiddenWith}`);
+  rawData = rawData.split('/').join(`${repForbiddenWith}`);
+  rawData = rawData.split('\\').join(`${repForbiddenWith}`);
+
   const dataSplitLine = rawData.split('\n');
   const header = dataSplitLine[0].split('\t');
   const rawDataArray = [];
   const words = [];
   let rawOutput = '';
   let sortedOutput = '';
+
 
   //* fill raw data array headers
   for (let i = 0; i < header.length; i += 1) {
@@ -169,9 +182,6 @@ function onCalculateClick() {
   //* split rawDataArray[0][..] into separate words
   rawDataArray[0].forEach((line, index) => {
     if (index !== 0) {
-      line = line.replace('+', ' ');
-      line = line.replace('^', ' ');
-      line = line.replace('$', ' ');
       line.split(' ').forEach((word) => {
         if (!words.includes(word) && word !== '') words.push(word);
       });

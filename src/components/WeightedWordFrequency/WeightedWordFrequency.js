@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TAData from './TAData';
+import TBReplaceForbidden from './TBReplaceForbidden';
 import BtnCalculate from './BtnCalculate';
 import './WeightedWordFrequency.css';
 
@@ -17,6 +18,8 @@ class WeightedWordFrequency extends Component {
         <div id="divWwf">
           <h2>Weighted Word Frequency</h2>
           <TAData />
+          <TBReplaceForbidden />
+          <br />
           <br />
           <BtnCalculate />
         </div>
