@@ -133,17 +133,8 @@ function generateAndDownloadWorkbook(sortedOutput) {
 }
 
 function onCalculateClick() {
-  let rawData = document.getElementById('taData').value;
+  const rawData = document.getElementById('taData').value;
   const repForbiddenWith = document.getElementById('tbRf').value;
-  rawData = rawData.split('$').join(`${repForbiddenWith}`);
-  rawData = rawData.split('^').join(`${repForbiddenWith}`);
-  rawData = rawData.split('*').join(`${repForbiddenWith}`);
-  rawData = rawData.split('+').join(`${repForbiddenWith}`);
-  rawData = rawData.split('.').join(`${repForbiddenWith}`);
-  rawData = rawData.split('?').join(`${repForbiddenWith}`);
-  rawData = rawData.split('/').join(`${repForbiddenWith}`);
-  rawData = rawData.split('\\').join(`${repForbiddenWith}`);
-
   const dataSplitLine = rawData.split('\n');
   const header = dataSplitLine[0].split('\t');
   const rawDataArray = [];
@@ -163,7 +154,16 @@ function onCalculateClick() {
     if (
       dataSplitLine[i].split('\t')[0] !== ''
       && dataSplitLine[i].split('\t')[0] !== undefined
-    ) { rawDataArray[0][i] = dataSplitLine[i].split('\t')[0]; }
+    ) {
+      dataSplitLine[i] = dataSplitLine[i].toString().split('$').join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i].toString().split('^').join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i].toString().split('*').join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i].toString().split('+').join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i].toString().split('?').join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i].toString().split('/').join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i].toString().split('\\').join(`${repForbiddenWith}`);
+      rawDataArray[0][i] = dataSplitLine[i].split('\t')[0];
+    }
   }
 
   //* fill raw data array values- parse to float
