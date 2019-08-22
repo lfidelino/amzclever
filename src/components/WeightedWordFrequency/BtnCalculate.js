@@ -157,6 +157,30 @@ function onCalculateClick() {
     ) {
       dataSplitLine[i] = dataSplitLine[i]
         .toString()
+        .split('{')
+        .join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i]
+        .toString()
+        .split('}')
+        .join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i]
+        .toString()
+        .split('[')
+        .join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i]
+        .toString()
+        .split(']')
+        .join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i]
+        .toString()
+        .split('(')
+        .join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i]
+        .toString()
+        .split(')')
+        .join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i]
+        .toString()
         .split('&')
         .join(`${repForbiddenWith}`);
       dataSplitLine[i] = dataSplitLine[i].toString().split('$').join(`${repForbiddenWith}`);

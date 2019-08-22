@@ -11,7 +11,8 @@ class TBReplaceForbidden extends Component {
   render() {
     return (
       <>
-        Replace forbidden characters (& $ ^ * + ? / \) with:
+        Replace forbidden characters ( &#123; &#125; [ ] ( ) & $ ^ * + ? / \
+        ) with:
         {' '}
         <input type="text" name="tbRf" id="tbRf" size="2" value="@" />
       </>
