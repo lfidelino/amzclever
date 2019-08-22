@@ -14,7 +14,7 @@ class WeightedWordFrequency extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <div id="divWwf">
           <h2>Weighted Word Frequency</h2>
           <TAData />
@@ -23,7 +23,7 @@ class WeightedWordFrequency extends Component {
           <br />
           <BtnCalculate />
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

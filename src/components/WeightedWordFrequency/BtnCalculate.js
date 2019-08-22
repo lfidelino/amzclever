@@ -155,6 +155,11 @@ function onCalculateClick() {
       dataSplitLine[i].split('\t')[0] !== ''
       && dataSplitLine[i].split('\t')[0] !== undefined
     ) {
+      dataSplitLine[i] = dataSplitLine[i]
+        .toString()
+        .split('&')
+        .join(`${repForbiddenWith}`);
+      dataSplitLine[i] = dataSplitLine[i].toString().split('$').join(`${repForbiddenWith}`);
       dataSplitLine[i] = dataSplitLine[i].toString().split('$').join(`${repForbiddenWith}`);
       dataSplitLine[i] = dataSplitLine[i].toString().split('^').join(`${repForbiddenWith}`);
       dataSplitLine[i] = dataSplitLine[i].toString().split('*').join(`${repForbiddenWith}`);
@@ -242,11 +247,11 @@ class BtnCalculate extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <button type="submit" id="btnCalculate" onClick={onCalculateClick}>
           Calculate
         </button>
-      </React.Fragment>
+      </>
     );
   }
 }

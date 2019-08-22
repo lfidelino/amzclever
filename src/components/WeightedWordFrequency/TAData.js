@@ -10,9 +10,9 @@ class TAData extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <textarea id="taData" />
-      </React.Fragment>
+      </>
     );
   }
 }
