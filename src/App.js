@@ -13,11 +13,11 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <React.Fragment>
+        <>
           <Switch>
             <Route exact path="/" component={WeightedWordFrequency} />
           </Switch>
-        </React.Fragment>
+        </>
       </BrowserRouter>
     );
   }
