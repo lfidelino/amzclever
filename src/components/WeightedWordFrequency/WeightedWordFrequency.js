@@ -7,8 +7,8 @@ import './WeightedWordFrequency.css';
 const initialState = {};
 
 class WeightedWordFrequency extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = initialState;
   }
 
