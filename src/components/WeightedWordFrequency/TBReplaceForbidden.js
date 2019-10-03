@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './TBReplaceForbidden.css';
 
 const initialState = {};
 

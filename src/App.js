@@ -30,6 +30,10 @@ class App extends Component {
       localStorage.setItem('timedIn', new Date(Date.now()));
       this.setState({ loggedIn: true });
     } else {
+      document.getElementById('inputPassword').value = '';
+      const msgs = ['Oops!', 'Try Again', 'Nope!', 'Nada', 'What?', 'Say again?'];
+      const msg = msgs[Math.floor(Math.random() * msgs.length)];
+      document.getElementById('inputPassword').placeholder = msg;
       this.setState({ loggedIn: false });
     }
   }
