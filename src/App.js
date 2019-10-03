@@ -6,28 +6,49 @@ import Login from './components/Login/Login';
 import WeightedWordFrequency from './components/WeightedWordFrequency/WeightedWordFrequency';
 import './App.css';
 
-const initialState = {
-  loggedIn: false,
-};
 class App extends Component {
   constructor() {
     super();
-    this.state = initialState;
+    this.state = {};
+    this.onLogin = this.onLogin.bind(this);
   }
 
   componentDidMount() {
-    localStorage.setItem('loggedIn', true);
+    console.log(new Date(Date.now()));
+    console.log(localStorage.getItem('timedIn'));
+    const diff = (new Date(Date.now())).getTime() - (new Date(localStorage.getItem('timedIn'))).getTime();
+    console.log(diff);
+    if (diff <= 3600000) {
+      this.setState({ loggedIn: true });
+    } else {
+      this.setState({ loggedIn: false });
+      localStorage.removeItem('timedIn');
+    }
+  }
+
+  onLogin = async (password) => {
+    if (password === 'Password8') {
+      localStorage.setItem('timedIn', new Date(Date.now()));
+      this.setState({ loggedIn: true });
+    } else {
+      this.setState({ loggedIn: false });
+    }
   }
 
   render() {
+    const { loggedIn } = this.state;
     return (
       <BrowserRouter>
         <>
           <Switch>
-            {localStorage.getItem('loggedIn') ? (
+            {loggedIn ? (
               <Route exact path="/" render={() => <WeightedWordFrequency />} />
             ) : (
-              <Route exact path="/" render={() => <Login />} />
+              <Route
+                exact
+                path="/"
+                render={() => <Login onLogin={this.onLogin} />}
+              />
             )}
           </Switch>
         </>

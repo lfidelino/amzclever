@@ -13,7 +13,7 @@ class TBReplaceForbidden extends Component {
       <>
         Replace forbidden characters ( &#123; &#125; [ ] ( ) & $ ^ * + ? / \
         ) with:
-        {' '}
+
         <input type="text" name="tbRf" id="tbRf" size="2" defaultValue="@" />
       </>
     );
