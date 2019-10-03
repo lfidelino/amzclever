@@ -11,6 +11,7 @@ class App extends Component {
     super();
     this.state = {};
     this.onLogin = this.onLogin.bind(this);
+    this.onLogout = this.onLogout.bind(this);
   }
 
   componentDidMount() {
@@ -24,13 +25,18 @@ class App extends Component {
     }
   }
 
-  onLogin = async (password) => {
+  onLogin = (password) => {
     if (password === 'Password8') {
       localStorage.setItem('timedIn', new Date(Date.now()));
       this.setState({ loggedIn: true });
     } else {
       this.setState({ loggedIn: false });
     }
+  }
+
+  onLogout = () => {
+    this.setState({ loggedIn: false });
+    localStorage.removeItem('timedIn');
   }
 
   render() {
@@ -40,7 +46,11 @@ class App extends Component {
         <>
           <Switch>
             {loggedIn ? (
-              <Route exact path="/" render={() => <WeightedWordFrequency />} />
+              <Route
+                exact
+                path="/"
+                render={() => <WeightedWordFrequency onLogout={this.onLogout} />}
+              />
             ) : (
               <Route
                 exact

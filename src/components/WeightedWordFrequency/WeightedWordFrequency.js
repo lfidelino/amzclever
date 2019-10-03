@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import TAData from './TAData';
 import TBReplaceForbidden from './TBReplaceForbidden';
@@ -13,6 +14,7 @@ class WeightedWordFrequency extends Component {
   }
 
   render() {
+    const { onLogout } = this.props;
     return (
       <>
         <div id="divWwf">
@@ -22,6 +24,10 @@ class WeightedWordFrequency extends Component {
           <br />
           <br />
           <BtnCalculate />
+
+          <button type="submit" id="btnLogout" onClick={onLogout}>
+            Logout
+          </button>
         </div>
       </>
     );

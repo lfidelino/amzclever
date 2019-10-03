@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
@@ -264,9 +265,13 @@ function onCalculateClick() {
 }
 
 class BtnCalculate extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = initialState;
+  }
+
+  componentDidMount() {
+    console.log(this.props);
   }
 
   render() {
