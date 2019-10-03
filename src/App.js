@@ -14,10 +14,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log(new Date(Date.now()));
-    console.log(localStorage.getItem('timedIn'));
+    document.getElementById('inputPassword').focus();
     const diff = (new Date(Date.now())).getTime() - (new Date(localStorage.getItem('timedIn'))).getTime();
-    console.log(diff);
     if (diff <= 3600000) {
       this.setState({ loggedIn: true });
     } else {

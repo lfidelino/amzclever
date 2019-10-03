@@ -1,0 +1,14 @@
+#inputPassword,
+#btnLogin {
+  font-size: 2em;
+}
+
+#inputPassword {
+  width: 8em;
+  text-align: center;
+}
+
+#login {
+  text-align: center;
+  margin-top: 15em;
+}

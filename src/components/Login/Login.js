@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
+import './Login.css';
 
 const initialState = {};
 
@@ -26,16 +27,18 @@ class Login extends Component {
   render() {
     return (
       <>
-        <input
-          type="password"
-          name="password"
-          id="inputPassword"
-          placeholder="Password..."
-        />
+        <div id="login">
+          <input
+            type="password"
+            name="password"
+            id="inputPassword"
+            placeholder="Password..."
+          />
 
-        <button type="submit" id="btnLogin" onClick={this.onPasswordSubmit}>
-          Login
-        </button>
+          <button type="submit" id="btnLogin" onClick={this.onPasswordSubmit}>
+            Login
+          </button>
+        </div>
       </>
     );
   }
